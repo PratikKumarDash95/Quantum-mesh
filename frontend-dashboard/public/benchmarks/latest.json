@@ -1,0 +1,14 @@
+{
+  "scenario": "placeholder",
+  "generatedAt": "",
+  "target": "not yet run",
+  "durationSeconds": 0,
+  "totalRequests": 0,
+  "requestsPerSecond": 0,
+  "errorRatePercent": 0,
+  "httpReqDuration": null,
+  "iterationDuration": null,
+  "perEndpoint": {},
+  "rateLimited": 0,
+  "rateLimitedRatio": 0
+}
