@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: quantummesh-config
+  namespace: quantummesh
+data:
+  EUREKA_URL: "http://discovery-service:8761/eureka/"
+  CONFIG_SERVER_URL: "http://config-server:8888"
+  KAFKA_BOOTSTRAP: "kafka:9092"
+  AI_ENGINE_HOST: "ai-engine"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: quantummesh-secrets
+  namespace: quantummesh
+type: Opaque
+stringData:
+  JWT_SECRET: "change-me-please-use-a-long-random-secret-key-32bytes-min"
+  DB_USER: "quantum"
+  DB_PASSWORD: "quantum"
