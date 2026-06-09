@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <springProperty name="appName" source="spring.application.name" defaultValue="quantummesh"/>
+    <appender name="CONSOLE_JSON" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <fieldName>@timestamp</fieldName>
+                    <pattern>yyyy-MM-dd'T'HH:mm:ss.SSSXXX</pattern>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                          "service": "${appName}",
+                          "level": "%level",
+                          "thread": "%thread",
+                          "logger": "%logger",
+                          "traceId": "%mdc{traceId}",
+                          "spanId": "%mdc{spanId}",
+                          "correlationId": "%mdc{correlationId}",
+                          "message": "%message"
+                        }
+                    </pattern>
+                </pattern>
+                <stackTrace><fieldName>stack</fieldName></stackTrace>
+            </providers>
+        </encoder>
+    </appender>
+    <appender name="CONSOLE_HUMAN" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level [${appName},%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <springProfile name="json">
+        <root level="INFO"><appender-ref ref="CONSOLE_JSON"/></root>
+    </springProfile>
+    <springProfile name="!json">
+        <root level="INFO"><appender-ref ref="CONSOLE_HUMAN"/></root>
+    </springProfile>
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>${LOGSTASH_HOST:-logstash}:${LOGSTASH_PORT:-5044}</destination>
+        <keepAliveDuration>5 minutes</keepAliveDuration>
+        <reconnectionDelay>5 seconds</reconnectionDelay>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"service":"${appName}"}</customFields>
+            <includeMdcKeyName>traceId</includeMdcKeyName>
+            <includeMdcKeyName>spanId</includeMdcKeyName>
+            <includeMdcKeyName>correlationId</includeMdcKeyName>
+        </encoder>
+    </appender>
+    <springProfile name="elk">
+        <root level="INFO"><appender-ref ref="LOGSTASH"/></root>
+    </springProfile>
+</configuration>
