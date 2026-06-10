@@ -21,7 +21,7 @@ public class JwtService {
     private final String issuer;
 
     public JwtService(
-            @Value("${quantummesh.jwt.secret:change-me-please-use-a-long-random-secret-key-32bytes-min}") String secret,
+            @Value("${quantummesh.jwt.secret}") String secret,
             @Value("${quantummesh.jwt.expiration-ms:3600000}") long expirationMillis,
             @Value("${quantummesh.jwt.issuer:quantummesh-auth}") String issuer
     ) {

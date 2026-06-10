@@ -16,7 +16,7 @@ public class JwtValidator {
     private final SecretKey signingKey;
 
     public JwtValidator(
-            @Value("${quantummesh.jwt.secret:change-me-please-use-a-long-random-secret-key-32bytes-min}") String secret
+            @Value("${quantummesh.jwt.secret}") String secret
     ) {
         this.signingKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }

@@ -15,7 +15,7 @@ services:
     environment:
       POSTGRES_DB: quantummesh
       POSTGRES_USER: quantum
-      POSTGRES_PASSWORD: quantum
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
     ports: ["5432:5432"]
     volumes: [postgres_data:/var/lib/postgresql/data]
     networks: [quantummesh]
@@ -70,10 +70,10 @@ services:
       EUREKA_HOST: discovery-service
       DB_URL: jdbc:postgresql://postgres:5432/quantummesh
       DB_USER: quantum
-      DB_PASSWORD: quantum
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
       DB_DRIVER: org.postgresql.Driver
       DB_DIALECT: org.hibernate.dialect.PostgreSQLDialect
-      JWT_SECRET: change-me-please-use-a-long-random-secret-key-32bytes-min
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
       SPRING_PROFILES_ACTIVE: postgres
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
@@ -90,7 +90,7 @@ services:
     environment:
       CONFIG_SERVER_URL: http://config-server:8888
       EUREKA_HOST: discovery-service
-      JWT_SECRET: change-me-please-use-a-long-random-secret-key-32bytes-min
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
       AI_ENGINE_HOST: localhost
